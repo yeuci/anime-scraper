@@ -9,6 +9,6 @@ How to use?
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Example: python crawler.py --https://gogoanime.sh/sub-category/fall-2015-anime
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Note: Any extension for gogoanime works. You can use .io, .se, .tv, etc.
+Note: Only the .tv extension of gogoanime works at the moment. Will implement all the other ones soon.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 I'll make a version which allows you to input a specific page soon so you arn't restricted to just the year and season.
