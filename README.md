@@ -5,7 +5,7 @@ How to use?
 
 #1: Install requirements
 
-#2: Type python crawler.py --url (For the "--url" the URL MUST be a page with a year/season)
+#2: Type: python crawler.py --url (For the "--url" the URL MUST be a page with a year/season)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Example: python crawler.py --https://gogoanime.sh/sub-category/fall-2015-anime
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
