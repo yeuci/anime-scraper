@@ -4,15 +4,18 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 from urlparse import urlparse
 
+# Importing, can be found in requirements.txt
 import argparse
 import csv
 import mechanize
 import requests
 import sys
 
+# Encoding used for writing to CSV
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+# Base URL for the site being scrapped. (Can change to whatever site, though the site MUST be running the same CMS)
 BASE_URL = 'https://gogoanimes.tv'
 url = BASE_URL + '/sub-category/spring-2018-anime?page=1'
 
@@ -30,7 +33,7 @@ def get_movie_details(url):
     response = br.open(url)
     bs = BeautifulSoup(response.read(), 'html.parser')
 
-    # Get movie id, episode start and end
+    # Get movie ID, episode start and end
     movie_id = bs.find('input', attrs={'id': 'movie_id'})['value']
     ep_page = bs.find('ul', attrs={'id': 'episode_page'})
 
@@ -127,6 +130,6 @@ if __name__ == "__main__":
                 pprint(row)
                 sys.stdout.flush()
 
-                # Write this row to csv
+                # Write this row to csv, using UTF
                 writer.writerow(row)
                 csvfile.flush()
