@@ -4,25 +4,22 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 from urlparse import urlparse
 
-# Importing, can be found in requirements.txt
 import argparse
 import csv
 import mechanize
 import requests
 import sys
 
-# Encoding used for writing to CSV
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-# Base URL for the site being scrapped. (Can change to whatever site, though the site MUST be running the same CMS)
 BASE_URL = 'https://gogoanimes.tv'
 url = BASE_URL + '/sub-category/spring-2018-anime?page=1'
 
 def init_mechanize():
 
     br = mechanize.Browser()
-    br.set_handle_robots(False)   # ignore robots
+    br.set_handle_robots(False)   
     br.set_handle_refresh(False)  # can sometimes hang without this
     br.addheaders = [('User-agent', 'Firefox')]
 
@@ -33,7 +30,6 @@ def get_movie_details(url):
     response = br.open(url)
     bs = BeautifulSoup(response.read(), 'html.parser')
 
-    # Get movie ID, episode start and end
     movie_id = bs.find('input', attrs={'id': 'movie_id'})['value']
     ep_page = bs.find('ul', attrs={'id': 'episode_page'})
 
@@ -50,7 +46,6 @@ def get_movie_details(url):
     return movie_id, ep_start, ep_end
 
 def get_episode_links(ep_start, ep_end, movie_id):
-    # Get episode links via API call
     url = BASE_URL + '/load-list-episode?ep_start={}&ep_end={}&id={}&default_ep=0'.format(ep_start, ep_end, movie_id)
     response = requests.get(url)
 
@@ -88,7 +83,6 @@ if __name__ == "__main__":
 
         writer = csv.writer(csvfile, delimiter=',', quotechar='|')
 
-        # Write header
         writer.writerow(['Title', 'Episode', 'Site 1', 'Site 2', 'Site 3', 'Site 4', 'Site 5', 'Site 6'])
 
         br = init_mechanize()
@@ -102,34 +96,26 @@ if __name__ == "__main__":
             a = item.find('a', href=True)
             link = a['href']
 
-            # Skip this link, doesn't contain valid page
             if 'category' not in link:
                 continue
 
             title = a['title']
 
-            # Get movie details
             movie_id, ep_start, ep_end = get_movie_details(BASE_URL + link)
 
-            # Get episode links
             ep_links = get_episode_links(ep_start, ep_end, movie_id)
 
-            # Get videos for each episode link
             for ep_link in ep_links:
 
-                # Get episode number
                 episode = ep_link[-1]
 
-                # Get episode videos
                 videos = get_episode_videos(BASE_URL + ep_link)
 
                 row = [title, episode]
                 row.extend(videos)
 
-                # Debug, show data
                 pprint(row)
                 sys.stdout.flush()
 
-                # Write this row to csv, using UTF
                 writer.writerow(row)
                 csvfile.flush()
