@@ -1,3 +1,6 @@
+# supported domains
+gogoanimes.org
+
 # anime-scraper
 python script that scrapes embed video links from gogoanime to an CSV file.
 
